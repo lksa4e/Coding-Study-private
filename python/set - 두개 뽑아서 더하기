@@ -41,3 +41,17 @@ def solution(numbers):
     answer = list(temp)
     answer.sort()
     return answer
+    
+-------------------유용한 다른사람 풀이----------------------------------------------------------------------------------------------------------------------------
+from itertools import combinations
+
+def solution(numbers):
+    answer = []
+    l = list(combinations(numbers, 2))
+
+    for i in l:
+        answer.append(i[0]+i[1])
+    answer = list(set(answer))
+    answer.sort()
+
+    return answer
