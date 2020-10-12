@@ -41,3 +41,32 @@ def solution(participant, completion):
     return answer
     
     
+-------------------------------유용한 다른사람 풀이 ---------------------------------------------------------------------------------------------------------------------
+def solution(participant, completion):
+    answer = ''
+    temp = 0
+    dic = {}
+    for part in participant:
+        dic[hash(part)] = part                  //hash(part) 하게되면 특정 숫자가 hash 키값으로 들어온다
+        temp += int(hash(part))                 //그걸 더해줌
+    for com in completion:
+        temp -= hash(com)                       // 다 빼고나면 participant에서 하나가 남는다
+    answer = dic[temp]
+
+    return answer
+
+//찾아야 하는 사람이 한명이기에 쓸 수 있는 풀이법
+
+------------------------------------------유용한 다른사람풀이 2 ----------------------------------------------------------------------------------------------------------
+
+import collections
+
+
+def solution(participant, completion):
+    answer = collections.Counter(participant) - collections.Counter(completion)   // Counter({'leo': 1, 'kiki': 1, 'eden': 1}) participant
+                                                                                    //Counter({'eden': 1, 'kiki': 1})  completion
+                                                                                    // print(answer) Counter({'leo': 1}) - 결과
+    return list(answer.keys())[0]                                                   // answer.keys() -> dict_keys(['leo']) 
+                                                                                    // list(answer.keys()) -> ['leo']
+                                                                                    // list(answer.keys())[0] -> leo
+    
