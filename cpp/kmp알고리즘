@@ -81,3 +81,16 @@ int main() {
 	cout << flag;
 	return 0;
 }
+
+-----------------------------------------------------------------------------------------------------------------------------------
+int main() {
+    cin >> s >> P;
+    for (int i = 0, j=0; i < s.size(); i++) {
+        if (s[i] >= 48 && s[i] <= 57)continue;
+        S[j] = s[i];
+        j++;
+    }
+    auto ptr = strstr(S, P);   // 이터레이터를 활용한 kmp 알고리즘 -> #include <string>에 있음
+    if (ptr == NULL)cout << 0;
+    else cout << 1;
+}
