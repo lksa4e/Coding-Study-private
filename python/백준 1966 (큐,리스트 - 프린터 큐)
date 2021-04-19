@@ -33,3 +33,23 @@
 5
 
 ---------------------------------------------------------
+
+T = int(input())
+for i in range(T):
+    cnt,flag = 1,0
+    n,m = map(int,input().split())
+    prio = list(map(int,input().split()))
+    arr = list(enumerate(prio))  # index와 함께 pair로 넣고싶을 때
+    while 1:
+        prio.sort()
+        if arr[0][1] ==  prio[-1]:
+            if arr[0][0] == m:
+                break
+            else:
+                prio.pop()
+                arr.pop(0)
+                cnt += 1
+        else:
+            temp = arr.pop(0)
+            arr.append(temp)
+    print(cnt)
