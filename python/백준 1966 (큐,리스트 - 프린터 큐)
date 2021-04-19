@@ -53,3 +53,23 @@ for i in range(T):
             temp = arr.pop(0)
             arr.append(temp)
     print(cnt)
+
+============================================================
+test_case = int(input())
+
+for _ in range(test_case):
+    n, m = list(map(int, input().split(' ')))
+    queue = list(map(int, input().split(' ')))
+    queue = [(i, idx) for idx, i in enumerate(queue)]
+    count = 0
+
+    while True:
+        if queue[0][0] == max(queue, key=lambda x: x[0])[0]:  #lambda 사용법 --> queue[x][0] 중에서 가장 큰 값을 찾아냄
+            count += 1
+            if queue[0][1] == m:
+                print(count)
+                break
+            else:
+                queue.pop(0) 
+        else:
+            queue.append(queue.pop(0))
