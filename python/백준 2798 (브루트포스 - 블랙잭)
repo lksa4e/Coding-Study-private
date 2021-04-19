@@ -1,34 +1,4 @@
-Skip to content
-Search or jump to…
 
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@lksa4e 
-lksa4e
-/
-Coding-Study
-1
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-Coding-Study/cpp/백준 2798 (브루트포스 - 블랙잭)
-@lksa4e
-lksa4e Create 백준 2798 (브루트포스 - 블랙잭)
-Latest commit 1a346fb on 19 Mar
- History
- 1 contributor
-104 lines (88 sloc)  3.42 KB
-  
 문제
 카지노에서 제일 인기 있는 게임 블랙잭의 규칙은 상당히 쉽다. 카드의 합이 21을 넘지 않는 한도 내에서, 카드의 합을 최대한 크게 만드는 게임이다. 
 블랙잭은 카지노마다 다양한 규정이 있다.
