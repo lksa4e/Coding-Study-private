@@ -1,0 +1,134 @@
+문제
+적록색약은 빨간색과 초록색의 차이를 거의 느끼지 못한다. 따라서, 적록색약인 사람이 보는 그림은 아닌 사람이 보는 그림과는 좀 다를 수 있다.
+
+크기가 N×N인 그리드의 각 칸에 R(빨강), G(초록), B(파랑) 중 하나를 색칠한 그림이 있다. 그림은 몇 개의 구역으로 나뉘어져 있는데, 
+구역은 같은 색으로 이루어져 있다. 또, 같은 색상이 상하좌우로 인접해 있는 경우에 두 글자는 같은 구역에 속한다. (색상의 차이를 거의 느끼지 못하는 경우도 같은 색상이라 한다)
+
+예를 들어, 그림이 아래와 같은 경우에
+
+RRRBB
+GGBBB
+BBBRR
+BBRRR
+RRRRR
+적록색약이 아닌 사람이 봤을 때 구역의 수는 총 4개이다. (빨강 2, 파랑 1, 초록 1) 하지만, 적록색약인 사람은 구역을 3개 볼 수 있다. (빨강-초록 2, 파랑 1)
+
+그림이 입력으로 주어졌을 때, 적록색약인 사람이 봤을 때와 아닌 사람이 봤을 때 구역의 수를 구하는 프로그램을 작성하시오.
+
+입력
+첫째 줄에 N이 주어진다. (1 ≤ N ≤ 100)
+
+둘째 줄부터 N개 줄에는 그림이 주어진다.
+
+출력
+적록색약이 아닌 사람이 봤을 때의 구역의 개수와 적록색약인 사람이 봤을 때의 구역의 수를 공백으로 구분해 출력한다.
+
+예제 입력 1 
+5
+RRRBB
+GGBBB
+BBBRR
+BBRRR
+RRRRR
+예제 출력 1 
+4 3
+
+알고리즘 분류
+그래프 이론
+그래프 탐색
+너비 우선 탐색
+깊이 우선 탐색
+
+
+----------------------------------------------------------------------------
+영역을 구분짓는 문제이므로 BFS 풀이를 사용한다.
+
+색약인 경우에는 처음 색상이 R, G이고 다음 좌표의 색상이 R or G일때 모두 탐색
+색약이 아닌 경우에는 다음 좌표의 색상이 처음 색상과 동일할 때만 탐색
+
+--------------------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <queue>
+using namespace std;
+char graph[101][101] = { 0 };
+bool visit[101][101] = { 0 };
+int dx[4] = { 1,-1,0,0 };
+int dy[4] = { 0,0,1,-1 };
+int N;
+void init() {
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			visit[i][j] = 0;
+		}
+	}
+}
+void bfs(int x, int y, char color, int sign) {
+	queue<pair<int, int>> q;
+	q.push({ x,y });
+	visit[x][y] = 1;
+	while (!q.empty()) {
+		int cur_x = q.front().first;
+		int cur_y = q.front().second;
+		q.pop();
+		for (int i = 0; i < 4; i++) {
+			int nx = cur_x + dx[i];
+			int ny = cur_y + dy[i];
+			if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+				if (color == 'B') { // 파랑이면 상관없음
+					if (visit[nx][ny] == 0 && graph[nx][ny] == color) {
+						visit[nx][ny] = 1;
+						q.push({ nx,ny });
+					}
+				}
+				else {
+					if (sign == 1) {  // 색약일때
+						if (visit[nx][ny] == 0 && (graph[nx][ny] == 'R' || graph[nx][ny] == 'G')) {
+							visit[nx][ny] = 1;
+							q.push({ nx,ny });
+						}
+					}
+					else {
+						if (visit[nx][ny] == 0 && graph[nx][ny] == color) {
+							visit[nx][ny] = 1;
+							q.push({ nx,ny });
+						}
+					}
+				}
+			}
+		}
+	}
+}
+int main() {
+	string s;
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		cin >> s;
+		for (int j = 0; j < N; j++) {
+			graph[i][j] = s[j];
+		}
+	}
+	int normal = 0;
+	int weak = 0;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if (visit[i][j] == 0) {
+				bfs(i,j, graph[i][j], 0);
+				normal++;
+			}
+		}
+	}
+	init();
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if (visit[i][j] == 0) {
+				bfs(i,j, graph[i][j], 1);
+				weak++;
+			}
+		}
+	}
+	cout << normal << " " << weak;
+	
+	return 0;
+}
+
