@@ -1,0 +1,108 @@
+문제
+수열 S가 어떤 수 Sk를 기준으로 S1 < S2 < ... Sk-1 < Sk > Sk+1 > ... SN-1 > SN을 만족한다면, 그 수열을 바이토닉 수열이라고 한다.
+
+예를 들어, {10, 20, 30, 25, 20}과 {10, 20, 30, 40}, {50, 40, 25, 10} 은 바이토닉 수열이지만,  
+{1, 2, 3, 2, 1, 2, 3, 2, 1}과 {10, 20, 30, 40, 20, 30} 은 바이토닉 수열이 아니다.
+
+수열 A가 주어졌을 때, 그 수열의 부분 수열 중 바이토닉 수열이면서 가장 긴 수열의 길이를 구하는 프로그램을 작성하시오.
+
+입력
+첫째 줄에 수열 A의 크기 N이 주어지고, 둘째 줄에는 수열 A를 이루고 있는 Ai가 주어진다. (1 ≤ N ≤ 1,000, 1 ≤ Ai ≤ 1,000)
+
+출력
+첫째 줄에 수열 A의 부분 수열 중에서 가장 긴 바이토닉 수열의 길이를 출력한다.
+
+예제 입력 1 
+10
+1 5 2 1 4 3 4 5 2 1
+예제 출력 1 
+7
+힌트
+예제의 경우 {1 5 2 1 4 3 4 5 2 1}이 가장 긴 바이토닉 부분 수열이다.
+
+알고리즘 분류
+다이나믹 프로그래밍
+
+---------------------------------------------------------------
+전체 배열을 탐색하며
+0 ~ i 까지의 가장 긴 증가하는 부분수열과 
+i ~ N 까지의 가장 긴 감소하는 부분수열을 더한 값 중 최대값을 구하는 문제이다.
+
+가장 긴 감소하는 부분수열의 경우 기존 LIS 알고리즘을 그대로 사용하되, index를 뒤에서부터 시작하면 된다.
+
+---------------------------------------------------------------
+
+#include <iostream>
+#include <map>
+#include <vector>
+#include <queue>
+#include <tuple>
+#include <stack>
+#include <string>
+#include <algorithm>
+#pragma warning(disable:4996)
+
+#define all(x) (x).begin,(x).end
+#define INF int(1e9)
+#define fastio ios::sync_with_stdio(0), cin.tie(0), cout.tie(0)
+#define txtcin freopen("input.txt", "r", stdin);
+#define fst first  
+#define snd second
+
+using namespace std;
+typedef pair<int, int> pii;
+typedef long long ll;
+typedef vector<vector<ll>> matrix;
+
+int N;
+vector<int> arr;
+
+int solve(int start, int end) {
+	vector<int> lis;
+	lis.push_back(arr[start]);
+	for (int i = start; i <= end; i++) {
+		if (lis.back() < arr[i]) {
+			lis.push_back(arr[i]);
+		}
+		else {
+			int idx = lower_bound(lis.begin(), lis.end(), arr[i]) - lis.begin();
+			lis[idx] = arr[i];
+		}
+	}
+	return lis.size();
+}
+
+int solve2(int start, int end) {
+	vector<int> lis;
+	lis.push_back(arr[end - 1]);
+	for (int i = end - 1; i >= start; i--) {
+		if (lis.back() < arr[i]) {
+			lis.push_back(arr[i]);
+		}
+		else {
+			int idx = lower_bound(lis.begin() ,lis.end(), arr[i]) - lis.begin();
+			lis[idx] = arr[i];
+		}
+	}
+	return lis.size();
+}
+int solve3() {
+	int result = 0;
+	for (int i = 0; i < N; i++) {
+		int p1 = solve(0, i);
+		int p2 = solve2(i, N);
+		result = max(result, p1 + p2 - 1);
+	}
+	return result;
+}
+int main() {
+	fastio;
+	int a;
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		cin >> a;
+		arr.push_back(a);
+	}
+	cout << solve3();
+	return 0;
+}
