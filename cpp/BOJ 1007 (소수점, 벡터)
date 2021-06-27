@@ -1,0 +1,117 @@
+문제
+평면 상에 N개의 점이 찍혀있고, 그 점을 집합 P라고 하자. 집합 P의 벡터 매칭은 벡터의 집합인데, 모든 벡터는 집합 P의 한 점에서 시작해서, 
+또 다른 점에서 끝나는 벡터의 집합이다. 또, P에 속하는 모든 점은 한 번씩 쓰여야 한다.
+
+V에 있는 벡터의 개수는 P에 있는 점의 절반이다.
+
+평면 상의 점이 주어졌을 때, 집합 P의 벡터 매칭에 있는 벡터의 합의 길이의 최솟값을 출력하는 프로그램을 작성하시오.
+
+입력
+첫째 줄에 테스트 케이스의 개수 T가 주어진다. 각 테스트 케이스는 다음과 같이 구성되어있다.
+
+테스트 케이스의 첫째 줄에 점의 개수 N이 주어진다. N은 짝수이다. 둘째 줄부터 N개의 줄에 점의 좌표가 주어진다. 
+N은 20보다 작거나 같은 자연수이고, 좌표는 절댓값이 100,000보다 작거나 같은 정수다. 모든 점은 서로 다르다.
+
+출력
+각 테스트 케이스마다 정답을 출력한다. 절대/상대 오차는 10-6까지 허용한다.
+
+예제 입력 1 
+2
+4
+5 5
+5 -5
+-5 5
+-5 -5
+2
+-100000 -100000
+100000 100000
+예제 출력 1 
+0.000000000000
+282842.712474619038
+
+
+------------------------------------------------------------------------------------------
+모든 벡터의 합을 구하게 된다면 
+점을 두 개씩 짝지어 N / 2 개의 벡터를 만들고, 각 벡터마다 두 개의 방향이 존재합니다.
+이는 O(N∗(N−2)∗(N−4)∗...∗2∗2) 정도 됩니다. 당연히 안 되겠죠.
+
+벡터의 합을 구할때는 모든 x좌표의 합을 구하고, 모든 y좌표의 합을 구하는 방식으로도 가능하다.
+이 때 N/2개는 + 연산을 수행하고, N/2개는 - 연산을 수행하게 된다.
+
+----------------------------------------------------------------------------------------
+cout<<fixed;
+cout.precision(12);
+cout<<answer;
+
+연산과
+printf("%.12lf\n", answer);은 값이 다르게 나온다.
+cout.precision 연산은 수행중 반올림을 하게 되는데 중간의 연산이 다르게 된다.
+-------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <map>
+#include <vector>
+#include <queue>
+#include <tuple>
+#include <stack>
+#include <string>
+#include <algorithm>
+#include <math.h>
+#pragma warning(disable:4996)
+
+#define endl '\n';
+#define all(x) (x).begin(),(x).end()
+#define INF int(1e9)
+#define fastio ios::sync_with_stdio(0), cin.tie(0), cout.tie(0)
+#define txtcin freopen("input.txt", "r", stdin);
+#define fst first  
+#define snd second
+
+using namespace std;
+typedef pair<int, int> pii;
+typedef long long ll;
+
+int N, K;
+vector<pii> v;
+vector<int> permu;
+void init() {
+	v.clear();
+	permu.clear();
+}
+
+int main() {
+	fastio;
+	int T;
+	int a, b; 
+	cin >> T;
+	
+	while (T--) {
+		init();
+		cin >> N;
+		for (int i = 0; i < N; i++) {
+			cin >> a >> b;
+			v.push_back({ a,b });
+			if (i < N / 2) permu.push_back(0);
+			else permu.push_back(1);
+		}
+		double answer = INF;
+		do {
+			double result = 0;
+			double x = 0, y = 0;
+			for (int i = 0; i < N; i++) {
+				if (permu[i] == 0) {
+					x += v[i].fst;
+					y += v[i].snd;
+				}
+				else {
+					x -= v[i].fst;
+					y -= v[i].snd;
+				}
+			}
+			result = sqrt(x * x + y * y);
+			answer = min(result, answer);
+		} while (next_permutation(all(permu)));
+		printf("%.12lf\n", answer);
+	}
+	return 0;
+}
