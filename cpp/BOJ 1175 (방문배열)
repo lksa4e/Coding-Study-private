@@ -57,10 +57,8 @@ x,y 좌표, 이전 방향, C 배달여부, D 배달여부를 체크해준다.
 #define txtcin freopen("input.txt", "r", stdin);
 #define fst first
 #define snd second
-
 using namespace std;
 typedef pair<int, int> pii;
-
 char graph[51][51];
 int dx[4] = { 1,-1,0,0 };
 int dy[4] = { 0,0,1,-1 };
