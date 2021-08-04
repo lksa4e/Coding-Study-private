@@ -1,5 +1,5 @@
 /**
-* 문제 링크 : https://swexpertacademy.com/main/talk/solvingClub/problemView.do?solveclubId=AXsACpHq0FEDFAX6&contestProbId=AV5LyE7KD2ADFAXc&probBoxId=AXsACpHq0FIDFAX6&type=PROBLEM&problemBoxTitle=0804&problemBoxCnt=3
+* 문제 링크 : https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5LyE7KD2ADFAXc
 */
 import java.io.BufferedReader;
 import java.io.FileInputStream;
